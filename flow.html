@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dynamic Draggable Divs with Connections</title>
+  <script src="https://unpkg.com/hyperscript.org"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .bg-dots {
+      background-image: radial-gradient(#494949 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+
+    svg.svg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .draggable {
+      position: absolute;
+      z-index: 1;
+      width: 3rem;
+      height: 3rem;
+      background: white;
+    }
+
+    .conn-point {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: blue;
+      border-radius: 50%;
+      bottom: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    .conn-point.selected {
+      background: red;
+    }
+
+    .controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-stone-950 h-screen bg-dots relative">
+    <div class="controls space-x-2">
+      <button class="add-div px-4 py-2 bg-green-600 text-white rounded">Add Node</button>
+      <button class="clear-connections px-4 py-2 bg-red-600 text-white rounded">Clear Connections</button>
+    </div>
+
+    <svg class="svg-overlay"></svg>
+
+    <div class="draggables-container">
+      <div class="draggable" _="
+      on mousedown
+        set me._dragging to true
+      on mousemove from window
+        if me._dragging then
+          set style.left of me to (event.clientX - 24) + 'px'
+          set style.top of me to (event.clientY - 24) + 'px'
+          call updateAllConnections()
+        end
+      on mouseup from window
+        set me._dragging to false
+    " style="left: 126.237px; top: 408.393px;">
+        <div class="conn-point"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    let selectedConnPoint = null;
+    let connections = [];
+
+    function updateAllConnections() {
+      connections.forEach(conn => updateConnection(conn));
+    }
+
+    function updateConnection(conn) {
+      const pointA = conn.from;
+      const pointB = conn.to;
+      const rectA = pointA.getBoundingClientRect();
+      const rectB = pointB.getBoundingClientRect();
+      const x1 = rectA.left + rectA.width / 2;
+      const y1 = rectA.top + rectA.height / 2;
+      const x2 = rectB.left + rectB.width / 2;
+      const y2 = rectB.top + rectB.height / 2;
+
+      const dx = Math.abs(x2 - x1);
+      const controlOffset = dx * 0.3;
+      const c1x = x1 + (x2 > x1 ? controlOffset : -controlOffset);
+      const c1y = y1;
+      const c2x = x2 + (x1 > x2 ? controlOffset : -controlOffset);
+      const c2y = y2;
+
+      conn.path.setAttribute('d', `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`);
+    }
+
+    function createConnection(pointA, pointB) {
+      for (const conn of connections) {
+        if ((conn.from === pointA && conn.to === pointB) ||
+          (conn.from === pointB && conn.to === pointA)) {
+          return;
+        }
+      }
+      const svgns = "http://www.w3.org/2000/svg";
+      const path = document.createElementNS(svgns, 'path');
+      path.setAttribute('stroke', 'white');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-width', '2');
+      path.style.pointerEvents = "auto";
+      path.addEventListener('click', function (e) {
+        removeConnectionByPath(path);
+        e.stopPropagation();
+      });
+      document.querySelector('.svg-overlay').appendChild(path);
+      connections.push({from: pointA, to: pointB, path: path});
+      updateConnection(connections[connections.length - 1]);
+    }
+
+    function removeConnection(pointA, pointB) {
+      for (let i = 0; i < connections.length; i++) {
+        const conn = connections[i];
+        if ((conn.from === pointA && conn.to === pointB) ||
+          (conn.from === pointB && conn.to === pointA)) {
+          conn.path.remove();
+          connections.splice(i, 1);
+          break;
+        }
+      }
+    }
+
+    function removeConnectionByPath(path) {
+      for (let i = 0; i < connections.length; i++) {
+        if (connections[i].path === path) {
+          connections[i].path.remove();
+          connections.splice(i, 1);
+          break;
+        }
+      }
+    }
+
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('conn-point')) {
+        e.stopPropagation();
+        const point = e.target;
+        if (!selectedConnPoint) {
+          selectedConnPoint = point;
+          point.classList.add('selected');
+        } else if (selectedConnPoint === point) {
+          point.classList.remove('selected');
+          selectedConnPoint = null;
+        } else {
+          const exists = connections.some(conn =>
+            (conn.from === selectedConnPoint && conn.to === point) ||
+            (conn.from === point && conn.to === selectedConnPoint)
+          );
+          if (exists) {
+            removeConnection(selectedConnPoint, point);
+          } else {
+            createConnection(selectedConnPoint, point);
+          }
+          selectedConnPoint.classList.remove('selected');
+          selectedConnPoint = null;
+        }
+      }
+    });
+
+
+
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelector('.add-div').addEventListener('click', function () {
+        const container = document.querySelector('.draggables-container');
+        const newDiv = document.createElement('div');
+        newDiv.classList.add('draggable');
+        newDiv.style.left = Math.random() * 400 + 50 + 'px';
+        newDiv.style.top = Math.random() * 400 + 50 + 'px';
+        newDiv.setAttribute('_', `
+      on mousedown
+        set me._dragging to true
+      on mousemove from window
+        if me._dragging then
+          set style.left of me to (event.clientX - 24) + 'px'
+          set style.top of me to (event.clientY - 24) + 'px'
+          call updateAllConnections()
+        end
+      on mouseup from window
+        set me._dragging to false
+    `);
+        const connPoint = document.createElement('div');
+        connPoint.classList.add('conn-point');
+        newDiv.appendChild(connPoint);
+        container.appendChild(newDiv);
+        reloadJs("https://unpkg.com/hyperscript.org");
+      });
+    });
+
+
+    document.querySelector('.clear-connections').addEventListener('click', function () {
+      connections.forEach(conn => conn.path.remove());
+      connections = [];
+    });
+
+    window.addEventListener('resize', updateAllConnections);
+
+
+
+    function reloadJs(src) {
+      // Find the first script whose "src" ends with the given string.
+      var scriptEl = document.querySelector('script[src$="' + src + '"]');
+      if (!scriptEl) return;
+
+      // Get the full src from that element.
+      var fullSrc = scriptEl.getAttribute('src');
+
+      // Remove all script elements with a src that ends with the fullSrc.
+      var scripts = document.querySelectorAll('script[src$="' + fullSrc + '"]');
+      scripts.forEach(function (el) {
+        el.parentNode.removeChild(el);
+      });
+
+      // Create a new script element, set its src, and append it to the head.
+      var newScript = document.createElement('script');
+      newScript.src = fullSrc;
+      document.head.appendChild(newScript);
+    }
+  </script>
+</body>
+
+</html>

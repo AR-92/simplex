@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dynamic Draggable Nodes with Input/Output Connections</title>
+  <script src="https://unpkg.com/hyperscript.org"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .bg-dots {
+      background-image: radial-gradient(#494949 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+
+    svg.svg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      cursor: pointer;
+
+    }
+
+    .draggable {
+      position: absolute;
+      z-index: 1;
+      width: 100px;
+      height: 100px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    /* Common connection point styling */
+    .conn-point {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      cursor: pointer;
+      pointer-events: auto;
+    }
+
+    /* Input points appear on the left */
+    .input-conn-point {
+      background: #4f46e5;
+      left: -11px;
+      border: 4px solid #000000;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    /* Output points appear on the right */
+    .output-conn-point {
+      background: #67e8f9;
+      right: -11px;
+      border: 4px solid #000000;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .conn-point.selected {
+      border: 4px solid red;
+    }
+
+    /* Node controls (for adding extra connection points) */
+    .node-controls {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4px;
+    }
+
+    .node-controls button {
+      font-size: 10px;
+      padding: 2px 4px;
+    }
+
+    /* Global controls */
+    .controls {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-stone-950 h-screen bg-dots relative">
+    <div class="controls space-x-2">
+      <button class="add-div px-4 py-2 bg-green-600 text-white rounded">Add Node</button>
+      <button class="clear-connections px-4 py-2 bg-red-600 text-white rounded">Clear Connections</button>
+    </div>
+
+    <svg class="svg-overlay"></svg>
+
+    <div class="draggables-container">
+      <!-- An example node already in the HTML -->
+      <div class="draggable" style="left: 100px; top: 200px;" _="
+          on mousedown
+            set me._dragging to true
+          on mousemove from window
+            if me._dragging then
+              set style.left of me to (event.clientX - 50) + 'px'
+              set style.top of me to (event.clientY - 50) + 'px'
+              call updateAllConnections()
+            end
+          on mouseup from window
+            set me._dragging to false
+        ">
+        <div class="conn-point input-conn-point" data-type="input"></div>
+        <div class="conn-point output-conn-point" data-type="output"></div>
+        <div class="node-controls">
+          <button class="add-input-conn">+ In</button>
+          <button class="add-output-conn">+ Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedConnPoint = null;
+    let connections = [];
+
+    function updateAllConnections() {
+      connections.forEach(conn => updateConnection(conn));
+    }
+
+    function updateConnection(conn) {
+      const pointA = conn.from;
+      const pointB = conn.to;
+      const rectA = pointA.getBoundingClientRect();
+      const rectB = pointB.getBoundingClientRect();
+      const x1 = rectA.left + rectA.width / 2;
+      const y1 = rectA.top + rectA.height / 2;
+      const x2 = rectB.left + rectB.width / 2;
+      const y2 = rectB.top + rectB.height / 2;
+
+      const dx = Math.abs(x2 - x1);
+      const controlOffset = dx * 0.3;
+      const c1x = x1 + (x2 > x1 ? controlOffset : -controlOffset);
+      const c1y = y1;
+      const c2x = x2 + (x1 > x2 ? controlOffset : -controlOffset);
+      const c2y = y2;
+
+      conn.path.setAttribute('d', `M ${x1} ${y1} C ${c1x} ${c1y}, ${c2x} ${c2y}, ${x2} ${y2}`);
+    }
+
+    function createConnection(outputPoint, inputPoint) {
+      // Prevent duplicate connections from the same output to input
+      for (const conn of connections) {
+        if (conn.from === outputPoint && conn.to === inputPoint) {
+          return;
+        }
+      }
+      const svgns = "http://www.w3.org/2000/svg";
+      const path = document.createElementNS(svgns, 'path');
+      path.setAttribute('stroke', '#494949');
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke-width', '2');
+      path.style.pointerEvents = "auto";
+      path.addEventListener('click', function (e) {
+        removeConnectionByPath(path);
+        e.stopPropagation();
+      });
+      document.querySelector('.svg-overlay').appendChild(path);
+      connections.push({from: outputPoint, to: inputPoint, path: path});
+      updateConnection(connections[connections.length - 1]);
+    }
+
+
+    function removeConnectionByPath(path) {
+      for (let i = 0; i < connections.length; i++) {
+        if (connections[i].path === path) {
+          // Fallback for browsers that don't support remove()
+          if (path.parentNode) {
+            path.parentNode.removeChild(path);
+          }
+          connections.splice(i, 1);
+          break;
+        }
+      }
+    }
+
+
+    // Global click listener for connection points.
+    // Only allow a connection to start from an "output" and finish at an "input"
+    document.addEventListener('click', function (e) {
+      if (e.target.classList.contains('conn-point')) {
+        e.stopPropagation();
+        const point = e.target;
+        const type = point.getAttribute('data-type');
+        if (!selectedConnPoint) {
+          // Only start selection if the point is an output
+          if (type === 'output') {
+            selectedConnPoint = point;
+            point.classList.add('selected');
+          }
+        } else {
+          // When an output is already selected, only allow connecting to an input point
+          if (type === 'input' && selectedConnPoint !== point) {
+            // Optionally prevent self-connection (same node)
+            if (selectedConnPoint.parentElement === point.parentElement) {
+              selectedConnPoint.classList.remove('selected');
+              selectedConnPoint = null;
+              return;
+            }
+            createConnection(selectedConnPoint, point);
+          }
+          selectedConnPoint.classList.remove('selected');
+          selectedConnPoint = null;
+        }
+      }
+    });
+
+    // Function to add a new connection point (input or output) to a node
+    function addConnectionPoint(node, type) {
+      const newPoint = document.createElement('div');
+      newPoint.classList.add('conn-point');
+      newPoint.classList.add(type === 'input' ? 'input-conn-point' : 'output-conn-point');
+      newPoint.setAttribute('data-type', type);
+      // Adjust vertical positioning for additional points.
+      // Count how many points of this type already exist
+      const existing = node.querySelectorAll(`.conn-point[data-type="${type}"]`).length;
+      // Here we nudge each extra point by 20px (adjust as needed)
+      newPoint.style.top = `calc(50% + ${existing * 20}px)`;
+      node.appendChild(newPoint);
+    }
+
+    // Initialize a node's connection controls (the add buttons)
+    function initNodeControls(node) {
+      const addInputBtn = node.querySelector('.add-input-conn');
+      const addOutputBtn = node.querySelector('.add-output-conn');
+      if (addInputBtn) {
+        addInputBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          addConnectionPoint(node, 'input');
+        });
+      }
+      if (addOutputBtn) {
+        addOutputBtn.addEventListener('click', function (e) {
+          e.stopPropagation();
+          addConnectionPoint(node, 'output');
+        });
+      }
+    }
+
+    // Initialize controls for any nodes already in the document
+    document.addEventListener('DOMContentLoaded', () => {
+      document.querySelectorAll('.draggable').forEach(initNodeControls);
+
+      document.querySelector('.add-div').addEventListener('click', function () {
+        const container = document.querySelector('.draggables-container');
+        const newNode = document.createElement('div');
+        newNode.classList.add('draggable');
+        newNode.style.left = Math.random() * 400 + 50 + 'px';
+        newNode.style.top = Math.random() * 400 + 50 + 'px';
+        newNode.setAttribute('_', `
+          on mousedown
+            set me._dragging to true
+          on mousemove from window
+            if me._dragging then
+              set style.left of me to (event.clientX - 50) + 'px'
+              set style.top of me to (event.clientY - 50) + 'px'
+              call updateAllConnections()
+            end
+          on mouseup from window
+            set me._dragging to false
+        `);
+        // Set the inner content with one default input and output connection point and controls.
+        newNode.innerHTML = `
+          <div class="conn-point input-conn-point" data-type="input"></div>
+          <div class="conn-point output-conn-point" data-type="output"></div>
+          <div class="node-controls">
+            <button class="add-input-conn">+ In</button>
+            <button class="add-output-conn">+ Out</button>
+          </div>
+        `;
+        container.appendChild(newNode);
+        initNodeControls(newNode);
+        reloadJs("https://unpkg.com/hyperscript.org");
+      });
+    });
+
+
+    document.querySelector('.clear-connections').addEventListener('click', function () {
+      connections.forEach(conn => {
+        if (conn.path.parentNode) {
+          conn.path.parentNode.removeChild(conn.path);
+        }
+      });
+      connections = [];
+    });
+
+
+    window.addEventListener('resize', updateAllConnections);
+
+    // Reload hyperscript if needed (as in your original code)
+    function reloadJs(src) {
+      var scriptEl = document.querySelector('script[src$="' + src + '"]');
+      if (!scriptEl) return;
+      var fullSrc = scriptEl.getAttribute('src');
+      var scripts = document.querySelectorAll('script[src$="' + fullSrc + '"]');
+      scripts.forEach(function (el) {
+        el.parentNode.removeChild(el);
+      });
+      var newScript = document.createElement('script');
+      newScript.src = fullSrc;
+      document.head.appendChild(newScript);
+    }
+  </script>
+</body>
+
+</html>

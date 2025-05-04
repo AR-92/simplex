@@ -1,0 +1,963 @@
+<div class="draggable" style="left: 100px; top: 200px;" _="
+          on mousedown
+            set me._dragging to true
+          on mousemove from window
+            if me._dragging then
+              set style.left of me to (event.clientX - 50) + 'px'
+              set style.top of me to (event.clientY - 50) + 'px'
+              call updateAllConnections()
+            end
+          on mouseup from window
+            set me._dragging to false
+        ">
+  <div class="border text-white w-[300px] border-[#1a1b1c] bg-[#0c0c0c] relative rounded-xl ">
+    <div class="grid gap-3 truncate text-wrap p-4 leading-5 border-[#1a1b1c] border-b">
+      <div class="flex justify-between rounded-t-lg">
+        <div class="flex gap-4 ">
+          <div class="w-5 h-5 "><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+              fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-puzzle lucide-icon">
+              <path
+                d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z">
+              </path>
+            </svg></div>
+          <div class="group flex w-full items-center gap-1">
+            <div class=" w-full truncate font-medium text-primary cursor-text">
+              <div class="flex items-center gap-2"><span class="max-w-44 truncate text-[14px]">Google Generative
+                  AI</span> </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex flex-shrink-0 items-center">
+          <div class="flex items-center gap-2 self-center">
+            <div class="cursor-help">
+              <div class="flex items-center self-center"></div>
+            </div>
+          </div> <button class="group" type="button"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" class="lucide lucide-play play-button-icon text-placeholder-foreground">
+              <polygon points="6 3 20 12 6 21 6 3"></polygon>
+            </svg> </button>
+        </div>
+        <div class="flex flex-shrink-0 items-center">
+          <div class="flex items-center gap-2 self-center">
+            <div class="cursor-help">
+              <div class="flex items-center self-center"></div>
+            </div>
+          </div> <button class="group" _="on click toggle .hidden on next <div/>" type="button"> <svg
+              xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+              class="lucide lucide-ellipsis-vertical">
+              <circle cx="12" cy="12" r="1"></circle>
+              <circle cx="12" cy="5" r="1"></circle>
+              <circle cx="12" cy="19" r="1"></circle>
+            </svg> </button>
+          <div class="hidden">
+            <div
+              class="absolute z-50 min-w-[11.5rem] overflow-hidden rounded-md border w-56  border-[#1a1b1c] bg-[#0c0c0c]">
+              <div class="p-1 h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]">
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-code mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                      </svg><span class=" ">Code</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>SPACE</span>
+                          </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c]  flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-sliders-horizontal mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <line x1="21" x2="14" y1="4" y2="4"></line>
+                        <line x1="10" x2="3" y1="4" y2="4"></line>
+                        <line x1="21" x2="12" y1="12" y2="12"></line>
+                        <line x1="8" x2="3" y1="12" y2="12"></line>
+                        <line x1="21" x2="16" y1="20" y2="20"></line>
+                        <line x1="12" x2="3" y1="20" y2="20"></line>
+                        <line x1="14" x2="14" y1="2" y2="6"></line>
+                        <line x1="8" x2="8" y1="10" y2="14"></line>
+                        <line x1="16" x2="16" y1="18" y2="22"></line>
+                      </svg><span class=" ">Controls</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-up h-4 w-4">
+                              <path d="M9 18v-6H5l7-7 7 7h-4v6H9z"></path>
+                            </svg> </span><span> <span>A</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-save-all mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <path d="M10 2v3a1 1 0 0 0 1 1h5"></path>
+                        <path d="M18 18v-6a1 1 0 0 0-1-1h-6a1 1 0 0 0-1 1v6"></path>
+                        <path d="M18 22H4a2 2 0 0 1-2-2V6"></path>
+                        <path
+                          d="M8 18a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9.172a2 2 0 0 1 1.414.586l2.828 2.828A2 2 0 0 1 22 6.828V16a2 2 0 0 1-2.01 2z">
+                        </path>
+                      </svg><span class=" ">Save</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <span>ALT</span> </span><span> <span>S</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-copy mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                      </svg><span class=" ">Duplicate</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <span>D</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-clipboard mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                      </svg><span class=" ">Copy</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <span>C</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg width="1em" height="1em"
+                        class="mr-2 absolute left-2 top-[0.25em] h-6 w-6 undefined" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M11.995 19.5a7.232 7.232 0 0 0 2.898-.585 7.582 7.582 0 0 0 2.392-1.627 7.748 7.748 0 0 0 1.625-2.398c.393-.904.59-1.868.59-2.89a7.172 7.172 0 0 0-.59-2.89 7.708 7.708 0 0 0-4.026-4.024 7.231 7.231 0 0 0-2.898-.586 7.209 7.209 0 0 0-2.888.586c-.905.39-1.7.932-2.387 1.626A7.788 7.788 0 0 0 5.09 9.11 7.172 7.172 0 0 0 4.5 12c0 1.022.197 1.986.59 2.89a7.748 7.748 0 0 0 1.625 2.398 7.582 7.582 0 0 0 2.392 1.627c.904.39 1.867.585 2.888.585Zm-3.687-4.238a.423.423 0 0 1-.316-.149c-.093-.099-.14-.247-.14-.446 0-.966.14-1.812.419-2.537.279-.725.721-1.29 1.328-1.696.607-.406 1.406-.609 2.396-.609h.093V8.366c0-.142.051-.266.154-.372a.514.514 0 0 1 .385-.158c.105 0 .198.024.279.07.08.047.182.129.306.246l3.167 2.956c.068.068.118.14.149.214.03.074.046.148.046.223a.578.578 0 0 1-.046.223.668.668 0 0 1-.149.213l-3.167 2.984c-.21.198-.409.297-.594.297a.52.52 0 0 1-.53-.511v-1.487h-.093c-.736 0-1.354.115-1.853.344-.498.229-.93.675-1.295 1.338-.075.136-.16.223-.256.26a.78.78 0 0 1-.283.056Z"
+                          fill="currentColor"></path>
+                      </svg><span class="ml-[1.8em]">Share</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-up h-4 w-4">
+                              <path d="M9 18v-6H5l7-7 7 7h-4v6H9z"></path>
+                            </svg> </span><span> <span>S</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-file-text mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                        <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                        <path d="M10 9H8"></path>
+                        <path d="M16 13H8"></path>
+                        <path d="M16 17H8"></path>
+                      </svg><span class=" ">Docs</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-up h-4 w-4">
+                              <path d="M9 18v-6H5l7-7 7 7h-4v6H9z"></path>
+                            </svg> </span><span> <span>D</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-minimize2 mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <polyline points="4 14 10 14 10 20"></polyline>
+                        <polyline points="20 10 14 10 14 4"></polyline>
+                        <line x1="14" x2="21" y1="10" y2="3"></line>
+                        <line x1="3" x2="10" y1="21" y2="14"></line>
+                      </svg><span class=" ">Minimize</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <span>.</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex  transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-snowflake mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <path d="m10 20-1.25-2.5L6 18"></path>
+                        <path d="M10 4 8.75 6.5 6 6"></path>
+                        <path d="m14 20 1.25-2.5L18 18"></path>
+                        <path d="m14 4 1.25 2.5L18 6"></path>
+                        <path d="m17 21-3-6h-4"></path>
+                        <path d="m17 3-3 6 1.5 3"></path>
+                        <path d="M2 12h6.5L10 9"></path>
+                        <path d="m20 10-1.5 2 1.5 2"></path>
+                        <path d="M22 12h-6.5L14 15"></path>
+                        <path d="m4 10 1.5 2L4 14"></path>
+                        <path d="m7 21 3-6-1.5-3"></path>
+                        <path d="m7 3 3 6h4"></path>
+                      </svg><span class=" ">Freeze</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <span>F</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex  transition-all"><svg xmlns="http://www.w3.org/2000/svg" version="1.2"
+                        viewBox="0 0 24 24" class="stroke-[1.5] mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <title>snowflake-svg</title>
+                        <path id="Layer copy" class="fill-none stroke-current" d="m6 22.3l-4.4-4.4 4.4-4.3"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m11 17.9h-9.4"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m7.8 8.9h14.6"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m15.1 1.6v14.6"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m21 11.8l-2.9-2.9 2.9-2.9"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m9.3 6l2.9 2.9-2.9 2.9"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m18.1 3.1l-3 2.9-2.9-2.9"></path>
+                        <path id="Layer" class="fill-none stroke-current" d="m12.2 14.8l2.9-3 3 3"></path>
+                      </svg><span class=" ">Freeze Path</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-up h-4 w-4">
+                              <path d="M9 18v-6H5l7-7 7 7h-4v6H9z"></path>
+                            </svg> </span><span> <span>F</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex undefined"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-download mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" x2="12" y1="15" y2="3"></line>
+                      </svg><span class=" ">Download</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <span>J</span> </span></span></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative hover:bg-red-950 text-red-500 flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-red-400/[.20]">
+                  <span>
+                    <div class="font-red flex text-status-red"><svg xmlns="http://www.w3.org/2000/svg" width="24"
+                        height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round"
+                        class="lucide lucide-trash2 relative top-0.5 mr-2 h-4 w-4">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" x2="10" y1="11" y2="17"></line>
+                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                      </svg> <span class="">Delete</span> <span
+                        class="absolute right-2 top-2 flex items-center justify-center rounded-sm px-1 py-[0.2]"><svg
+                          xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                          class="lucide lucide-delete h-4 w-4 stroke-2 ">
+                          <path
+                            d="M10 5a2 2 0 0 0-1.344.519l-6.328 5.74a1 1 0 0 0 0 1.481l6.328 5.741A2 2 0 0 0 10 19h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2z">
+                          </path>
+                          <path d="m12 9 6 6"></path>
+                          <path d="m18 9-6 6"></path>
+                        </svg></span> </div>
+                  </span>
+                </div>
+                <div
+                  class="relative  hover:bg-[#1a1b1c] flex w-full cursor-pointer select-none items-center rounded-sm px-3 py-1.5 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50">
+                  <span>
+                    <div class="flex  transition-all"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-hammer mr-2 mt-[0.15em] h-4 w-4 undefined">
+                        <path d="m15 12-8.373 8.373a1 1 0 1 1-3-3L12 9"></path>
+                        <path d="m18 15 4-4"></path>
+                        <path
+                          d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172V7l-2.26-2.26a6 6 0 0 0-4.202-1.756L9 2.96l.92.82A6.18 6.18 0 0 1 12 8.4V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5">
+                        </path>
+                      </svg><span class=" ">Tool Mode</span><span
+                        class="absolute right-2 top-[0.43em] flex items-center rounded-sm bg-muted px-1.5 py-[0.1em] text-muted-foreground"><span
+                          class="flex items-center gap-0.5 justify-center text-[12px]"><span> <span>Ctrl</span>
+                          </span><span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                              stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-big-up h-4 w-4">
+                              <path d="M9 18v-6H5l7-7 7 7h-4v6H9z"></path>
+                            </svg> </span><span> <span>M</span> </span></span></span> </div>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="overflow-auto w-full">
+        <div class=" generic-node-desc-text h-full cursor-text text-[13px] text-muted-foreground word-break-break-word">
+          <div
+            class="markdown prose flex w-full flex-col text-[13px] leading-5 word-break-break-word [&amp;_pre]:whitespace-break-spaces [&amp;_pre]:!bg-code-description-background [&amp;_pre_code]:!bg-code-description-background dark:prose-invert">
+            <p>Generate text using Google Generative AI.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div
+          class="react-flow__handle  nodrag nopan group/handle z-50 transition-all target connectable connectablestart connectableend connectionindicator">
+          <div
+            class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+          </div>
+        </div>
+        <div class="flex w-full gap-2 flex-col">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"><span><span class="text-sm font-medium"> <span class="text-[13px]">Input</span>
+                  </span></span></div><span class="text-status-red"></span>
+            </div>
+          </div>
+          <div class="flex w-full items-center gap-3 justify-center">
+            <div class="relative w-full">
+              <div
+                class="primary-input noflow nopan nodelete nodrag border-1 flex h-full min-h-[2.375rem] cursor-default flex-wrap items-center ">
+                <input type="text" class="bg-[#1a1b1c] h-10 rounded-lg px-2 w-full truncate px-1 pr-4 cursor-default"
+                  placeholder="Enter Input Value..." value="">
+              </div><span class="right-0 absolute inset-y-0 flex items-center pr-5"><button
+                  class="text-placeholder-foreground hover:text-foreground"><svg xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe cursor-pointer icon-size">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                  </svg></button></span>
+
+              <div class="conn-point input-conn-point" data-type="input"></div>
+              <div class="conn-point output-conn-point" data-type="output"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div
+          class="react-flow__handle  nodrag nopan group/handle z-50 transition-all target connectable connectablestart connectableend connectionindicator">
+          <div
+            class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+          </div>
+        </div>
+        <div class="flex w-full gap-2 flex-col">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"><span><span class="text-sm font-medium">
+                    <div class=""><span class="text-[13px]">Mem0 Configuration</span></div>
+                  </span></span></div><span class="text-status-red"></span>
+              <div class="cursor-help"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info relative bottom-px ml-1 h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex w-full items-center gap-3 justify-center">
+            <div class="flex w-full flex-col gap-3">
+              <div class="flex w-full gap-3"><button _="on click toggle .hidden on next <div/>"
+                  class="noflow nopan nodelete nodrag inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-100 disabled:disabled-state [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border bg-background text-secondary-foreground hover:bg-muted hover:shadow-sm h-9 px-3 rounded-md hover:bg-mute w-full font-medium text-primary"
+                  type="button"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-code h-4 w-4">
+                    <polyline points="16 18 22 12 16 6"></polyline>
+                    <polyline points="8 6 2 12 8 18"></polyline>
+                  </svg>Edit Mem0 Config</button>
+                <!-- Modal -->
+                <div id="js-code"
+                  class="fixed z-40 inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                  <div class="">
+                    <svg _="on click toggle .hidden on #js-code" xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-circle-x m-2 justify-self-end">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="m15 9-6 6"></path>
+                      <path d="m9 9 6 6"></path>
+                    </svg>
+
+                    <pre contenteditable="true"
+                      class="h-96 rounded-lg w-[1000px] overflow-y-auto overflow-x-hidden rainbow-show"
+                      data-trimmed="true"><code data-language="javascript" class="rainbow rainbow-show">
+                        <span class="comment">/**
+                          * cross browser get attribute for an element
+                          *
+                          * @see http://stackoverflow.com/questions/3755227/cross-browser-javascript-getattribute-method
+                          *
+                          * @param {Element} el
+                          * @param {string} attr attribute you are trying to get
+                          * @returns {string}
+                          */</span>
+                        <span class="storage function">function</span> <span
+                          class="entity name function">_attr</span>(el, attr) {
+                        <span class="storage type">var</span> result <span class="keyword operator">=</span>
+                        (el.getAttribute <span class="keyword operator">&amp;</span><span
+                          class="keyword operator">&amp;</span> el.<span
+                          class="support method">getAttribute</span>(attr)) <span class="keyword operator">|</span><span
+                          class="keyword operator">|</span> <span class="constant language">null</span>;
+
+                        <span class="keyword">if</span> (<span class="keyword operator">!</span>result) {
+                        <span class="storage type">var</span> attrs <span class="keyword operator">=</span>
+                        el.attributes,
+                        length <span class="keyword operator">=</span> attrs.<span
+                          class="support property">length</span>,
+                        i;
+
+                        <span class="keyword">for</span> (i <span class="keyword operator">=</span> <span
+                          class="constant numeric">0</span>; i <span class="keyword operator">&lt;</span> length; <span
+                          class="keyword operator">+</span><span class="keyword operator">+</span>i) {
+                        <span class="keyword">if</span> (attr[i].<span class="support property">nodeName</span> <span
+                          class="keyword operator">=</span><span class="keyword operator">=</span><span
+                          class="keyword operator">=</span> attr) {
+                        result <span class="keyword operator">=</span> attr[i].<span
+                          class="support property">nodeValue</span>;
+                        }
+                        }
+                        }
+
+                        <span class="keyword">return</span> result;
+                        }</code>
+                      <div class="preloader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div
+          class="react-flow__handle  nodrag nopan group/handle z-50 transition-all target connectable connectablestart connectableend connectionindicator">
+          <div
+            class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+          </div>
+        </div>
+        <div class="flex w-full gap-2 flex-col">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"><span><span class="text-sm font-medium"> <span class="text-[13px]">System
+                      Message</span> </span></span></div><span class="text-status-red"></span>
+              <div class="cursor-help"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info relative bottom-px ml-1 h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex w-full items-center gap-3 justify-center">
+            <div class=" relative w-full"><input type="text"
+                class="bg-[#1a1b1c] h-10 rounded-lg px-2 nopan nodelete nodrag noflow primary-input w-full pr-3 primary-input text-muted-foreground"
+                placeholder="Type something..." value="">
+              <div class="conn-point input-conn-point" data-type="input"></div>
+              <div class="conn-point output-conn-point" data-type="output"></div>
+
+
+              <div class="w-full" type="button">
+                <button _="on click toggle .hidden on next <div/>" class="gradient-fade-input top-[-2.1rem] h-7"><svg
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-scan cursor-pointer icons-parameters-comp absolute right-3 h-4 w-4 shrink-0 top-[-1.7rem] bg-background text-foreground">
+                    <path d="M3 7V5a2 2 0 0 1 2-2h2"></path>
+                    <path d="M17 3h2a2 2 0 0 1 2 2v2"></path>
+                    <path d="M21 17v2a2 2 0 0 1-2 2h-2"></path>
+                    <path d="M7 21H5a2 2 0 0 1-2-2v-2"></path>
+                  </svg> </button>
+                <div id="text-adder"
+                  class="fixed z-40 inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                  <div class="">
+                    <svg _="on click toggle .hidden on #text-adder" xmlns="http://www.w3.org/2000/svg" width="24"
+                      height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-circle-x m-2 justify-self-end">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="m15 9-6 6"></path>
+                      <path d="m9 9 6 6"></path>
+                    </svg>
+                    <pre contenteditable="true"
+                      class="h-96 rounded-lg w-[1000px] overflow-y-auto overflow-x-hidden rainbow-show"
+                      data-trimmed="true"><code data-language="markdown" class="rainbow rainbow-show">
+                      </code>
+                      <div class="preloader">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                      </div>
+                    </pre>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div class="flex w-full gap-2 flex-row">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"> <span class="text-sm font-medium">
+                  <div class="max-w-56 truncate"> <span class="text-[13px]">Stream</span> </div>
+                </span> </div> <span class="text-status-red"></span>
+              <div class="cursor-help"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info relative bottom-px ml-1 h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+
+          <div class="flex w-full items-center gap-3 justify-end">
+            <button id="toggleSwitch" type="button" class="peer bg-[#1a1b1c] inline-flex h-6 w-11 shrink-0 cursor-pointer items-center 
+           rounded-full border-2 border-transparent px-0.5 transition-colors 
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+           focus-visible:ring-offset-2 focus-visible:ring-offset-background 
+           disabled:cursor-not-allowed disabled:opacity-50 bg-input" _="
+      on click 
+        if my @aria-checked is 'false' then
+          set @aria-checked to 'true'
+          add .bg-primary to me
+          remove .bg-input from me
+          add .translate-x-5 to #toggleIndicator
+          remove .translate-x-0 from #toggleIndicator
+        else
+          set @aria-checked to 'false'
+          remove .bg-primary from me
+          add .bg-input to me
+          remove .translate-x-5 from #toggleIndicator
+          add .translate-x-0 to #toggleIndicator
+      end
+    " aria-checked="false">
+              <span id="toggleIndicator" class="bg-white pointer-events-none block h-4 w-4 rounded-full shadow-lg ring-0 
+             transition-transform translate-x-0"></span>
+            </button>
+          </div>
+
+        </div>
+      </div>
+      <div class="relative flex w-full items-center justify-between px-5 py-2">
+        <div class="flex w-full flex-col gap-2">
+          <div class="flex items-center justify-between text-sm">
+            <div class="flex items-center truncate gap-2"> <span class="text-[13px] font-medium">Max Output
+                Tokens</span> <span class="text-status-red"></span>
+              <div class="cursor-help"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex items-center justify-center gap-3">
+            <div class="w-full relative"> <input id="maxTokensInput"
+                class="h-10 w-full rounded-lg bg-[#1a1b1c] px-2 text-white" inputmode="decimal" type="text"
+                pattern="[0-9]*" placeholder="Type an integer number" value="0">
+              <div class="absolute right-0 top-0 flex flex-col border-l border-[#616161]"> <button
+                  class="border-b hover:bg-muted p-1 border-[#616161]"
+                  _="on click set #maxTokensInput's value to (parseInt(#maxTokensInput.value) + 1)"> <svg
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-plus h-3 w-3 text-placeholder-foreground hover:text-primary transition-colors">
+                    <path d="M5 12h14"></path>
+                    <path d="M12 5v14"></path>
+                  </svg> </button> <button class="hover:bg-muted p-1"
+                  _="on click set #maxTokensInput's value to (parseInt(#maxTokensInput.value) - 1)"> <svg
+                    xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-minus h-3 w-3 text-placeholder-foreground hover:text-primary transition-colors">
+                    <path d="M5 12h14"></path>
+                  </svg> </button> </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div class="flex w-full flex-col gap-2">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"> <span class="text-sm font-medium"> <span class="text-[13px]">Model</span>
+                </span>
+              </div> <span class="text-status-red"></span>
+              <div class="cursor-help"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info relative bottom-px ml-1 h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex w-full items-center justify-center gap-3">
+            <div class="relative w-full"> <button type="button" _="on click toggle .hidden on #dropdown-menu"
+                class="inline-flex w-full items-center justify-between gap-2 rounded-md border bg-background py-2 px-3 text-sm font-normal text-secondary-foreground transition hover:bg-muted hover:shadow-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2">
+                <span class="selected-value flex items-center gap-2 truncate">Select Model</span> <svg
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-chevrons-up-down ml-2 h-4 w-4 shrink-0 text-foreground hover:text-foreground">
+                  <path d="m7 15 5 5 5-5"></path>
+                  <path d="m7 9 5-5 5 5"></path>
+                </svg> </button>
+              <div id="dropdown-menu"
+                class="hidden absolute bg-[#0c0c0c] z-10 mt-1 w-full border border-gray-200 shadow-lg rounded-md">
+                <input type="text"
+                  class="w-full px-3 bg-[#1a1b1c] py-2 border-b border-gray-200 text-sm focus:outline-none text-white"
+                  placeholder="Search..."
+                  _="on keyup         if the event's key is 'Escape'           set my value to ''           trigger keyup         else          show <li/> in #option when its textContent contains my value">
+                <ul id="option" class="max-h-40 overflow-y-auto bg-[#1a1b1c]">
+                  <li class="p-2 hover:bg-[#434343] cursor-pointer"
+                    _="on click put my.innerHTML into .selected-value then add .hidden to #dropdown-menu">
+                    gemini-1.5-pro
+                  </li>
+                  <li class="p-2 hover:bg-[#434343] cursor-pointer"
+                    _="on click put my.innerHTML into .selected-value then add .hidden to #dropdown-menu">gpt-4-turbo
+                  </li>
+                  <li class="p-2 hover:bg-[#434343] cursor-pointer"
+                    _="on click put my.innerHTML into .selected-value then add .hidden to #dropdown-menu">
+                    claude-3-haiku
+                  </li>
+                </ul>
+              </div>
+            </div> <button type="button" _="on click put 'Select Model' into .selected-value"
+              class="p-1 rounded-md transition text-muted-foreground hover:bg-accent hover:text-accent-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-refresh-ccw h-5 w-5 animate-wiggle group-hover:text-foreground text-muted-foreground">
+                <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+                <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"></path>
+                <path d="M16 16h5v5"></path>
+              </svg> </button>
+          </div>
+        </div>
+      </div>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div
+          class="react-flow__handle nodrag nopan group/handle z-50 transition-all target connectable connectablestart connectableend connectionindicator">
+          <div
+            class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+          </div>
+        </div>
+        <div class="flex w-full gap-2 flex-col">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"> <span> <span class="text-sm font-medium"> <span class="text-[13px]">Google API
+                      Key</span> </span> </span> </div> <span class="text-status-red">*</span>
+              <div class="cursor-help"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info relative bottom-px ml-1 h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex w-full items-center gap-3 justify-between">
+            <div class="relative w-full flex justify-between gap-3">
+              <div class="w-full">
+                <div class="border-1 flex h-full min-h-[2.375rem] cursor-default flex-wrap items-center"> <input
+                    id="password-input" type="password"
+                    class="bg-[#1a1b1c] h-10 rounded-lg px-2 popover-input nodrag w-full px-1 text-clip pr-14 cursor-default"
+                    placeholder="Enter Value..." value=""> </div>
+              </div> <span class="right-8 absolute inset-y-0 flex items-center pr-2.5"> <button
+                  class="text-placeholder-foreground hover:text-foreground"> <svg xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-globe cursor-pointer icon-size">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+                    <path d="M2 12h20"></path>
+                  </svg> </button> </span> <button type="button" class="toggle-visibility"> <svg xmlns="
+                http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-eye-off relative top-[1px] h-5 w-5 text-placeholder-foreground hover:text-foreground">
+                  <path
+                    d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49">
+                  </path>
+                  <path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"></path>
+                  <path
+                    d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143">
+                  </path>
+                  <path d="m2 2 20 20"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div class="flex w-full gap-2 flex-col">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"> <span class="text-[13px] font-medium">Temperature</span> </div>
+              <div class="cursor-help ml-2"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex w-full items-center gap-3 justify-center">
+            <div class="relative w-full rounded-lg">
+              <div class="flex items-center justify-end"> <span id="sliderValue"
+                  class="relative bottom-[1px] font-mono text-sm hover:cursor-text">0.10</span> </div>
+              <div class="flex cursor-default items-center justify-center my-6"> <input type="range" min="0" max="2"
+                  step="0.01" value="0.1" id="slider"
+                  class="w-full h-1 bg-[#1a1b1c] rounded-full appearance-none cursor-pointer"> </div>
+              <div class="text mt-2 grid grid-cols-2 gap-x-2 text-sm">
+                <div class="flex items-center"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" class="lucide lucide-pencil-ruler mr-1 h-4 w-4 text-placeholder-foreground">
+                    <path d="M13 7 8.7 2.7a2.41 2.41 0 0 0-3.4 0L2.7 5.3a2.41 2.41 0 0 0 0 3.4L7 13"></path>
+                    <path d="m8 6 2-2"></path>
+                    <path d="m18 16 2-2"></path>
+                    <path d="m17 11 4.3 4.3c.94.94.94 2.46 0 3.4l-2.6 2.6c-.94.94-2.46.94-3.4 0L11 17"></path>
+                    <path
+                      d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z">
+                    </path>
+                    <path d="m15 5 4 4"></path>
+                  </svg> <span class="text-xs text-placeholder-foreground">Precise</span> </div>
+                <div class="flex items-center justify-end"> <span
+                    class="text-xs text-placeholder-foreground">Creative</span> <svg xmlns="http://www.w3.org/2000/svg"
+                    width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-palette ml-1 h-4 w-4 text-placeholder-foreground">
+                    <circle cx="13.5" cy="6.5" r=".5" fill="currentColor"></circle>
+                    <circle cx="17.5" cy="10.5" r=".5" fill="currentColor"></circle>
+                    <circle cx="8.5" cy="7.5" r=".5" fill="currentColor"></circle>
+                    <circle cx="6.5" cy="12.5" r=".5" fill="currentColor"></circle>
+                    <path
+                      d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.554C21.965 6.012 17.461 2 12 2z">
+                    </path>
+                  </svg> </div>
+              </div>
+              <div class="conn-point input-conn-point" data-type="input"></div>
+              <div class="conn-point output-conn-point" data-type="output"></div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <script>        document.getElementById('slider').addEventListener('input', function () {document.getElementById('sliderValue').textContent = this.value;});      </script>
+      <div class="relative flex min-h-10 w-full flex-wrap items-center justify-between px-5 py-2">
+        <div class="flex w-full gap-2 flex-row">
+          <div class="flex w-full items-center justify-between text-sm">
+            <div class="flex w-full items-center truncate">
+              <div class="flex gap-2"><span><span class="text-sm font-medium">
+                    <div class="max-w-56 truncate"><span class="text-[13px]">Tool Model Enabled</span></div>
+                  </span></span></div><span class="text-status-red"></span>
+              <div class="cursor-help"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                  stroke-linejoin="round" class="lucide lucide-info relative bottom-px ml-1 h-3 w-3 text-placeholder">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4"></path>
+                  <path d="M12 8h.01"></path>
+                </svg> </div>
+            </div>
+          </div>
+          <div class="flex w-full items-center gap-3 justify-end"> <button id="toggleSwitchTool" type="button" class="peer bg-[#1a1b1c] inline-flex h-6 w-11 shrink-0 cursor-pointer items-center 
+           rounded-full border-2 border-transparent px-0.5 transition-colors 
+           focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring 
+           focus-visible:ring-offset-2 focus-visible:ring-offset-background 
+           disabled:cursor-not-allowed disabled:opacity-50 bg-input" _="
+      on click 
+        if my @aria-checked is 'false' then
+          set @aria-checked to 'true'
+          add .bg-primary to me
+          remove .bg-input from me
+          add .translate-x-5 to #toggleIndicatorTool
+          remove .translate-x-0 from #toggleIndicatorTool
+        else
+          set @aria-checked to 'false'
+          remove .bg-primary from me
+          add .bg-input to me
+          remove .translate-x-5 from #toggleIndicatorTool
+          add .translate-x-0 to #toggleIndicatorTool
+      end
+    " aria-checked="false">
+              <span id="toggleIndicatorTool" class="bg-white pointer-events-none block h-4 w-4 rounded-full shadow-lg ring-0 
+             transition-transform translate-x-0"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="flex-max-width justify-center"> </div>
+      <div class="relative mt-1 flex h-11 w-full flex-wrap items-center justify-between bg-muted px-5 py-2">
+        <div class="flex w-full items-center justify-end truncate text-sm">
+          <div class="flex flex-1"><button type="button"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-eye icon-size text-placeholder-foreground hover:text-primary-hover">
+                <path
+                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+                </path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg> </button></div>
+          <div class="flex items-center gap-2"><span><span class="text-[13px] font-medium">Message</span></span>
+            <div class="flex items-center gap-2"><button disabled="" type="button"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-text-search icon-size cursor-not-allowed text-placeholder-foreground opacity-60">
+                  <path d="M21 6H3"></path>
+                  <path d="M10 12H3"></path>
+                  <path d="M10 18H3"></path>
+                  <circle cx="17" cy="15" r="3"></circle>
+                  <path d="m21 19-1.9-1.9"></path>
+                </svg></button></div>
+          </div>
+        </div>
+        <div
+          class="react-flow__handle react-flow__handle-right nodrag nopan group/handle z-50 transition-all source connectable connectablestart connectableend connectionindicator">
+          <div
+            class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+          </div>
+        </div>
+      </div>
+      <div
+        class="relative mt-1 flex h-11 w-full flex-wrap items-center justify-between bg-muted px-5 py-2 rounded-b-[0.69rem]">
+        <div class="flex w-full items-center justify-end truncate text-sm">
+          <div class="flex flex-1"><button type="button"> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round"
+                class="lucide lucide-eye icon-size text-placeholder-foreground hover:text-primary-hover">
+                <path
+                  d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+                </path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg> </button></div>
+          <div class="flex items-center gap-2"><span><span class="text-[13px] font-medium">Language
+                Model</span></span>
+            <div class="flex items-center gap-2"><button disabled="" type="button"><svg
+                  xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                  class="lucide lucide-text-search icon-size cursor-not-allowed text-placeholder-foreground opacity-60">
+                  <path d="M21 6H3"></path>
+                  <path d="M10 12H3"></path>
+                  <path d="M10 18H3"></path>
+                  <circle cx="17" cy="15" r="3"></circle>
+                  <path d="m21 19-1.9-1.9"></path>
+                </svg></button></div>
+          </div>
+        </div>
+        <div
+          class="react-flow__handle react-flow__handle-right nodrag nopan group/handle z-50 transition-all source connectable connectablestart connectableend connectionindicator">
+          <div
+            class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+          </div>
+        </div>
+      </div>
+      <div class="h-0 overflow-hidden">
+        <div class="block">
+          <div class="relative mt-1 flex h-11 w-full flex-wrap items-center justify-between bg-muted px-5 py-2">
+            <div class="flex w-full items-center justify-end truncate text-sm">
+              <div class="flex flex-1"><button type="button"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-eye icon-size text-placeholder-foreground hover:text-primary-hover">
+                    <path
+                      d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+                    </path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg> </button></div>
+              <div class="flex items-center gap-2"><span><span class="text-[13px] font-medium">Message</span></span>
+                <div class="flex items-center gap-2"><button disabled="" type="button"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-text-search icon-size cursor-not-allowed text-placeholder-foreground opacity-60">
+                      <path d="M21 6H3"></path>
+                      <path d="M10 12H3"></path>
+                      <path d="M10 18H3"></path>
+                      <circle cx="17" cy="15" r="3"></circle>
+                      <path d="m21 19-1.9-1.9"></path>
+                    </svg></button></div>
+              </div>
+            </div>
+            <div
+              class="react-flow__handle react-flow__handle-right nodrag nopan group/handle z-50 transition-all source connectable connectablestart connectableend connectionindicator">
+              <div
+                class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+              </div>
+            </div>
+          </div>
+          <div
+            class="relative mt-1 flex h-11 w-full flex-wrap items-center justify-between bg-muted px-5 py-2 rounded-b-[0.69rem]">
+            <div class="flex w-full items-center justify-end truncate text-sm">
+              <div class="flex flex-1"><button type="button"> <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-eye icon-size text-placeholder-foreground hover:text-primary-hover">
+                    <path
+                      d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0">
+                    </path>
+                    <circle cx="12" cy="12" r="3"></circle>
+                  </svg> </button></div>
+              <div class="flex items-center gap-2"><span><span class="text-[13px] font-medium">Language
+                    Model</span></span>
+                <div class="flex items-center gap-2"><button disabled="" type="button"><svg
+                      xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                      stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                      class="lucide lucide-text-search icon-size cursor-not-allowed text-placeholder-foreground opacity-60">
+                      <path d="M21 6H3"></path>
+                      <path d="M10 12H3"></path>
+                      <path d="M10 18H3"></path>
+                      <circle cx="17" cy="15" r="3"></circle>
+                      <path d="m21 19-1.9-1.9"></path>
+                    </svg></button></div>
+              </div>
+            </div>
+            <div
+              class="react-flow__handle react-flow__handle-right nodrag nopan group/handle z-50 transition-all source connectable connectablestart connectableend connectionindicator">
+              <div
+                class="noflow nowheel nopan noselect pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 cursor-crosshair rounded-full">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

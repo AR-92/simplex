@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Simple Flow Graph with Hyperscript & TailwindCSS</title>
+  <!-- Include Hyperscript and TailwindCSS from CDN -->
+  <script src="https://unpkg.com/hyperscript.org"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Highlight active output port */
+    .port.active {
+      outline: 2px solid yellow;
+    }
+  </style>
+</head>
+
+<body class="bg-gray-200 h-screen relative" _="on load call #updateConnections">
+
+  <!-- SVG container for connection lines -->
+  <svg id="svgContainer" class="absolute inset-0 w-full h-full pointer-events-none"></svg>
+
+  <!-- NODE TEMPLATE:
+       Each node listens for pointerdown to start dragging (storing an offset),
+       then listens for pointermove (from document) to update its position,
+       and on pointerup stops dragging. -->
+
+  <!-- Node 1 -->
+  <div id="node1" class="absolute bg-white p-4 border rounded shadow cursor-pointer" style="top: 50px; left: 50px;" _="on pointerdown
+              set my.dataset.dragging to 'true'
+              set my.dataset.offsetX to (event.clientX - my.offsetLeft)
+              set my.dataset.offsetY to (event.clientY - my.offsetTop)
+              then listen on document for pointermove
+                if my.dataset.dragging is 'true'
+                  let newX = event.clientX - parseInt(my.dataset.offsetX)
+                  let newY = event.clientY - parseInt(my.dataset.offsetY)
+                  move my to newX, newY then call #updateConnections
+                end
+            on pointerup from document
+              remove my.dataset.dragging">
+    <div class="flex justify-between">
+      <!-- Input Ports (blue) -->
+      <div class="flex flex-col space-y-2">
+        <span id="node1-in1" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+        <span id="node1-in2" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+      </div>
+      <!-- Output Ports (green) -->
+      <div class="flex flex-col space-y-2">
+        <span id="node1-out1" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+        <span id="node1-out2" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+      </div>
+    </div>
+    <div class="text-center mt-2 font-bold">Node 1</div>
+  </div>
+
+  <!-- Node 2 -->
+  <div id="node2" class="absolute bg-white p-4 border rounded shadow cursor-pointer" style="top: 150px; left: 300px;" _="on pointerdown
+              set my.dataset.dragging to 'true'
+              set my.dataset.offsetX to (event.clientX - my.offsetLeft)
+              set my.dataset.offsetY to (event.clientY - my.offsetTop)
+              then listen on document for pointermove
+                if my.dataset.dragging is 'true'
+                  let newX = event.clientX - parseInt(my.dataset.offsetX)
+                  let newY = event.clientY - parseInt(my.dataset.offsetY)
+                  move my to newX, newY then call #updateConnections
+                end
+            on pointerup from document
+              remove my.dataset.dragging">
+    <div class="flex justify-between">
+      <!-- Input Ports -->
+      <div class="flex flex-col space-y-2">
+        <span id="node2-in1" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+        <span id="node2-in2" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+      </div>
+      <!-- Output Ports -->
+      <div class="flex flex-col space-y-2">
+        <span id="node2-out1" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+        <span id="node2-out2" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+      </div>
+    </div>
+    <div class="text-center mt-2 font-bold">Node 2</div>
+  </div>
+
+  <!-- Node 3 -->
+  <div id="node3" class="absolute bg-white p-4 border rounded shadow cursor-pointer" style="top: 300px; left: 100px;" _="on pointerdown
+              set my.dataset.dragging to 'true'
+              set my.dataset.offsetX to (event.clientX - my.offsetLeft)
+              set my.dataset.offsetY to (event.clientY - my.offsetTop)
+              then listen on document for pointermove
+                if my.dataset.dragging is 'true'
+                  let newX = event.clientX - parseInt(my.dataset.offsetX)
+                  let newY = event.clientY - parseInt(my.dataset.offsetY)
+                  move my to newX, newY then call #updateConnections
+                end
+            on pointerup from document
+              remove my.dataset.dragging">
+    <div class="flex justify-between">
+      <!-- Input Ports -->
+      <div class="flex flex-col space-y-2">
+        <span id="node3-in1" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+        <span id="node3-in2" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+      </div>
+      <!-- Output Ports -->
+      <div class="flex flex-col space-y-2">
+        <span id="node3-out1" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+        <span id="node3-out2" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+      </div>
+    </div>
+    <div class="text-center mt-2 font-bold">Node 3</div>
+  </div>
+
+  <!-- Node 4 -->
+  <div id="node4" class="absolute bg-white p-4 border rounded shadow cursor-pointer" style="top: 250px; left: 500px;" _="on pointerdown
+              set my.dataset.dragging to 'true'
+              set my.dataset.offsetX to (event.clientX - my.offsetLeft)
+              set my.dataset.offsetY to (event.clientY - my.offsetTop)
+              then listen on document for pointermove
+                if my.dataset.dragging is 'true'
+                  let newX = event.clientX - parseInt(my.dataset.offsetX)
+                  let newY = event.clientY - parseInt(my.dataset.offsetY)
+                  move my to newX, newY then call #updateConnections
+                end
+            on pointerup from document
+              remove my.dataset.dragging">
+    <div class="flex justify-between">
+      <!-- Input Ports -->
+      <div class="flex flex-col space-y-2">
+        <span id="node4-in1" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+        <span id="node4-in2" data-port="input" class="port w-4 h-4 bg-blue-500 rounded-full cursor-pointer" _="on click
+                if document.body.dataset.connStart then
+                  let startPort = document.body.dataset.connStart
+                  let inputPort = me
+                  create <path stroke='black' fill='none' stroke-width='2'></path> into #svgContainer then
+                    set it.dataset.from to startPort
+                    set it.dataset.to to inputPort.id
+                  remove .active from (document.getElementById(startPort))
+                  remove document.body.dataset.connStart
+                  then call #updateConnections
+                end"></span>
+      </div>
+      <!-- Output Ports -->
+      <div class="flex flex-col space-y-2">
+        <span id="node4-out1" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+        <span id="node4-out2" data-port="output" class="port w-4 h-4 bg-green-500 rounded-full cursor-pointer" _="on click
+                set document.body.dataset.connStart to my.id
+                add .active to me"></span>
+      </div>
+    </div>
+    <div class="text-center mt-2 font-bold">Node 4</div>
+  </div>
+
+  <!-- Function to update all connection paths -->
+  <script type="text/hyperscript">
+    def updateConnections()
+      for each path in document.querySelectorAll("#svgContainer path")
+        let fromEl = document.getElementById(path.dataset.from)
+        let toEl = document.getElementById(path.dataset.to)
+        if fromEl and toEl then
+          let fromRect = fromEl.getBoundingClientRect()
+          let toRect = toEl.getBoundingClientRect()
+          let x1 = fromRect.left + fromRect.width / 2
+          let y1 = fromRect.top + fromRect.height / 2
+          let x2 = toRect.left + toRect.width / 2
+          let y2 = toRect.top + toRect.height / 2
+          put "M " + x1 + " " + y1 + " L " + x2 + " " + y2 into path's @d
+        end
+      end
+    end
+  </script>
+
+</body>
+
+</html>

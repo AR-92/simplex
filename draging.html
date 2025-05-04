@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Draggable Div with Hyperscript</title>
+  <script src="https://unpkg.com/hyperscript.org"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .bg-dots {
+      background-image: radial-gradient(#494949 1px, transparent 0);
+      background-size: 20px 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-stone-950 h-screen bg-dots">
+    <div style="left: 353px; top: 183px;" _="
+        on mousedown
+          set me._dragging to true
+        on mousemove from window
+          if me._dragging then
+            set style.left of me to (event.clientX - 3) + 'px'
+            set style.top of me to (event.clientY - 3) + 'px'
+          end
+        on mouseup from window
+          set me._dragging to false
+      " class="w-6 h-6 bg-white absolute"></div>
+
+    <div _="
+        on mousedown
+          set me._dragging to true
+        on mousemove from window
+          if me._dragging then
+            set style.left of me to (event.clientX - 3) + 'px'
+            set style.top of me to (event.clientY - 3) + 'px'
+          end
+        on mouseup from window
+          set me._dragging to false
+      " class="w-6 h-6 bg-white absolute"></div>
+  </div>
+</body>
+
+</html>

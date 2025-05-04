@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dynamic Draggable Nodes with Input/Output Connections</title>
+  <script src="./hyperscript.js"></script>
+  <script src="https://unpkg.com/htmx.org@2.0.4"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" type="" href="./custom.css">
+</head>
+
+<body hx-history="false" class="bg-stone-950 h-screen bg-dots relative overflow-hidden">
+
+  <div class="controls space-x-2">
+    <button hx-get="./node.html" hx-swap="beforeend" hx-target=".draggables-container"
+      class="add-div px-4 py-2 bg-green-600 text-white rounded">Add Node</button>
+  </div>
+  <div class="zoomable">
+    <svg class="svg-overlay"></svg>
+
+    <div class="draggables-container "></div>
+  </div>
+</body>
+<script src="./utils.js"></script>
+
+</html>
